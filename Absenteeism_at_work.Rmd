@@ -22,8 +22,8 @@ output:
 
 Coping with the high rate of business environment or gaining competitive advantages and customer satisfaction are mainly based on organizational resources, especially an employee. Employees with low performance cause a vital lose for organizations and the absenteeism consider to be one of the factors that affect performance.
 Absenteeism is defined as absence to work as expected, represents for the company the loss of productivity and quality of work. In this context, the prediction of absenteeism becomes important in decision making avoiding loss of efficiency and excellence at work.
-The aim of this project is to discover the factors and causes of employees absence using exploratory data analysis. 
-In this methodology, the work starts with data cleaning and preprocessing the absenteeism database by grouping some type of attributes and studying the correlation between the attributes and the absenteeism to find the significant causes of absenteeism. 
+The aim of this project is to discover the factors and causes of employees absence using exploratory data analysis.
+In this methodology, the work starts with data cleaning and preprocessing the absenteeism database by grouping some type of attributes and studying the correlation between the attributes and the absenteeism to find the significant causes of absenteeism.
 
 # Software Settings
 
@@ -127,31 +127,31 @@ str(myData,width=80,strict.width="cut")
 
 We can see that the type of the variables fits to the expected one.
 
-In the next step of the data cleaning the beginning and end of the data set are viewed because there might be blank spaces in the beginning or end which could cause errors when analyzing. To view the beginning and end the *head* and *tail* functions are used. 
+In the next step of the data cleaning the beginning and end of the data set are viewed because there might be blank spaces in the beginning or end which could cause errors when analyzing. To view the beginning and end the *head* and *tail* functions are used.
 
 ```{r}
 #data set myData
-kable(head(myData[,1:6]), align= c('c'), 
+kable(head(myData[,1:6]), align= c('c'),
       caption='Head of Data: first 6 rows', booktabs=TRUE, linesep="") %>%
   kable_styling(latex_options =c('striped', 'scale_down', 'hold_position'))
 
-  kable(head(myData[,7:13]), align= c('c'), 
+  kable(head(myData[,7:13]), align= c('c'),
         caption='Head of Data: rows 7-13', booktabs=TRUE, linesep="") %>%
   kable_styling(latex_options =c('striped', 'scale_down', 'hold_position'))
-  
-  kable(head(myData[,14:21]), align= c('c'), 
+
+  kable(head(myData[,14:21]), align= c('c'),
         caption='Head of Data: rows 14-21', booktabs=TRUE, linesep="") %>%
   kable_styling(latex_options =c('striped', 'scale_down', 'hold_position'))
-  
-kable(tail(myData[,1:6]), align= c('c'), 
+
+kable(tail(myData[,1:6]), align= c('c'),
       caption='Tail of Data: first 6 rows', booktabs=TRUE, linesep="") %>%
   kable_styling(latex_options =c('striped', 'scale_down', 'hold_position'))
 
-  kable(tail(myData[,7:13]), align= c('c'), 
+  kable(tail(myData[,7:13]), align= c('c'),
         caption='Tail of Data: rows 7-13', booktabs=TRUE, linesep="") %>%
   kable_styling(latex_options =c('striped', 'scale_down', 'hold_position'))
-  
-  kable(tail(myData[,14:21]), align= c('c'), 
+
+  kable(tail(myData[,14:21]), align= c('c'),
         caption='Tail of Data: rows 14-21', booktabs=TRUE, linesep="") %>%
   kable_styling(latex_options =c('striped', 'scale_down', 'hold_position'))  
 ```
@@ -159,12 +159,12 @@ kable(tail(myData[,1:6]), align= c('c'),
 In the next step the range of values for the numerical variables is checked with the *summary* function in order to find any outlier in the values, exclude errors such as typing errors or misunderstandings e.g. units. This is carried out for data set.
 
 ```{r}
-summary(myData) 
+summary(myData)
 ```
 
-The range for the different variables can be taken from the results after running the *summary* function. 
-Zero in Reason.for.absence for absence is not a valid category. ICD codes do not support it. 
- 
+The range for the different variables can be taken from the results after running the *summary* function.
+Zero in Reason.for.absence for absence is not a valid category. ICD codes do not support it.
+
 ```{r}
 #Remove observations zero in Reason code.
 range(myData$Reason.for.absence)
@@ -172,7 +172,7 @@ myData <- myData[!(myData$Reason.for.absence == 0),]
 ```
 
 Also in the Absenteeism.time.in.hours there is value zero which is not logical.
-  
+
 ```{r}
 # Observations in which reason code is zero and absenteeism time is zero.
 time0 <- subset(myData, Absenteeism.time.in.hours <= 0 & Reason.for.absence > 0,
@@ -197,7 +197,7 @@ glimpse(myData,width=80,strict.width="cut")
 Having a look at the data set, it is obvious that Disciplinary.failure is a column with zero values which can be considered as a noise. So we remove that attribute.
 
 ```{r}
-#Remove Disciplinary failure attribute. 
+#Remove Disciplinary failure attribute.
 myData <- myData[,-12]
 ```
 
@@ -212,9 +212,9 @@ There is no missing value in any part of the data set. Thus the data frame is re
 
 # Data Analysis
 
-In order to analyse the given data, an approach is taken to gain an overview of the data volume with the help of classifications. This should make it possible to identify correlations and to further analyse only those groups for which the analysis generates the greatest added value. 
+In order to analyse the given data, an approach is taken to gain an overview of the data volume with the help of classifications. This should make it possible to identify correlations and to further analyse only those groups for which the analysis generates the greatest added value.
 
-This means that it is decided which groups are to be analysed further and which are not. Only then is an attempt made to find out how the respective characteristics of these people are related to the diseases and, subsequently, to their absence. 
+This means that it is decided which groups are to be analysed further and which are not. Only then is an attempt made to find out how the respective characteristics of these people are related to the diseases and, subsequently, to their absence.
 
 ## Overview
 
@@ -222,7 +222,7 @@ First, the frequencies of the periods of absence are shown in a bar plot.
 
 ```{r, fig1, fig.cap= "Frequency of absent times", fig.align="center", fig.pos="H",fig.width=12, fig.height=6}
 ggplot(myData, aes(Absenteeism.time.in.hours))+ geom_bar() +
-  scale_x_continuous(n.breaks = 10) + scale_y_continuous(n.breaks = 10) + 
+  scale_x_continuous(n.breaks = 10) + scale_y_continuous(n.breaks = 10) +
   labs(x = "Absent time in hours", y = "Frequency")
 ```
 
@@ -233,7 +233,7 @@ Time category | Absent time | Absent time in hours
 ------------- | --------------------- | ------------
 VS - very short | 1-2 days | 0-16
 S - short | 2 days - 1 week | 16-40
-L - long | 1-2 weeks | 40-80 
+L - long | 1-2 weeks | 40-80
 VL - very long | more than 3 weeks | more than 80
 
 
@@ -285,11 +285,11 @@ Next, the most common reasons for the absence of these people are presented.
 
 ```{r, fig2, fig.cap= "Frequency of several diseases", fig.align="center", fig.pos="H" ,fig.width=12, fig.height=6}
 
-ggplot(VS, aes(x=(Reason.for.absence))) + 
-  geom_histogram(binwidth = 0.5) + 
-  labs(x = "Reason for absence", y = "Frequency") + 
-  scale_x_continuous(breaks = seq(1, 28, by=1)) + 
-  scale_y_continuous(n.breaks = 10) 
+ggplot(VS, aes(x=(Reason.for.absence))) +
+  geom_histogram(binwidth = 0.5) +
+  labs(x = "Reason for absence", y = "Frequency") +
+  scale_x_continuous(breaks = seq(1, 28, by=1)) +
+  scale_y_continuous(n.breaks = 10)
 ```
 
 
@@ -305,18 +305,18 @@ for (i in 1:28)
 {
   Reason <- subset(VS, Reason.for.absence == i)
   HoursReason <- sum(Reason$Absenteeism.time.in.hours)
-  
+
   Reasons[i]=i
   Hours[i]=HoursReason
 }
 #make a new data frame
 HoursReasons = data.frame(Reasons, Hours)
 #sort the Reasons column based on Hours  
-HoursReasons$Reasons <- factor(HoursReasons$Reasons, 
+HoursReasons$Reasons <- factor(HoursReasons$Reasons,
                                levels = HoursReasons$Reasons[order(-HoursReasons$Hours)])
 
-ggplot(HoursReasons, aes(x = Reasons, y = Hours)) + 
-  geom_col(width = 0.5) + 
+ggplot(HoursReasons, aes(x = Reasons, y = Hours)) +
+  geom_col(width = 0.5) +
  labs(x = "Reason for absence", y = "Total hours") +
  geom_hline(yintercept=200, linetype="dashed", color = "red")
 
@@ -325,7 +325,7 @@ A tangible picture now emerges of which reasons for absence cause the most hours
 
 Of particular interest are the top 6 of those reasons that each cause more than 200 hours of absence. For the segment to be analysed, therefore, only those persons who were absent for the following reasons are taken into account:
 
-Reason | name 
+Reason | name
 ----- | ------
 23 | Medical consultation
 28 | Dental consultation
@@ -359,7 +359,7 @@ corrplot(abs(cor(DataCor)), type="upper", tl.col="black",
          tl.cex = .7, col=brewer.pal(n=9, name="Reds"))
 
 ```
-Figure 4 illustrates the correlation heatmap with considering the selected data. Darker and bigger circles represent positive correlation and lighter ones show negative correlation with respect to other factors. Height is highly related to the Body.mass.index and also there is correlation between Age and Service.time. Furthermore, no other variable in highly correlated with another factor. By considering these, in the next step a hierarchical and a k-means clustering is carried out to test if the classifications of absenteeism explains the values of the variables in the data set. 
+Figure 4 illustrates the correlation heatmap with considering the selected data. Darker and bigger circles represent positive correlation and lighter ones show negative correlation with respect to other factors. Height is highly related to the Body.mass.index and also there is correlation between Age and Service.time. Furthermore, no other variable in highly correlated with another factor. By considering these, in the next step a hierarchical and a k-means clustering is carried out to test if the classifications of absenteeism explains the values of the variables in the data set.
 
 ## Clustering and K-means
 
@@ -412,13 +412,13 @@ kmM <- kmeans(dist(PhysicalProfile1,
 
 # k-means vs hierchical cluster comparisons
 kmMFrame <- data.frame(StudyData, cluster=factor(kmM$cluster))
-P1 <- ggplot(kmMFrame, aes(x=Weight, y=Height, color=cluster)) + geom_point(size = 3) + 
+P1 <- ggplot(kmMFrame, aes(x=Weight, y=Height, color=cluster)) + geom_point(size = 3) +
   theme(legend.position="none")
 
 ClusterFrame <- data.frame(StudyData, cluster=factor(StudyData$Groups))
 P2 <- ggplot(ClusterFrame, aes(x=Weight, y=Height, color=cluster)) + geom_point(size = 3)
 
-grid.arrange(P1,P2, ncol =2, left = "K-Means", right = "Hierarchical Cluster") 
+grid.arrange(P1,P2, ncol =2, left = "K-Means", right = "Hierarchical Cluster")
 
 ```
 
@@ -426,14 +426,14 @@ Now that we have determined our hierarchical clustering method by Euclidean appr
 
 ```{r, fig7, fig.cap= "Age density", fig.align="center", fig.pos="H",fig.width=9, fig.height=5, message = FALSE}
 #Histogram with density plot for Age
-ggplot(PhysicalProfile, aes(x=Age)) + 
+ggplot(PhysicalProfile, aes(x=Age)) +
  geom_histogram(aes(y=..density..), colour="black", fill="darkgrey")+
  geom_density(alpha=.2, fill="red") +
   geom_vline(aes(xintercept=mean(Age)), color="blue",
              linetype="dashed")
 
 ```
-From figure 7 it is understandable that the Age distribution for the Study Data does not have pattern, however the *mean* is around 36 years. 
+From figure 7 it is understandable that the Age distribution for the Study Data does not have pattern, however the *mean* is around 36 years.
 
 *StudyData* people are now clustered into groups. In order to achieve a more general distribution, the persons are divided according to their BMI, i.e. height and weight.
 
@@ -441,7 +441,7 @@ From figure 7 it is understandable that the Age distribution for the Study Data 
 #test clustered categories for physical profile answers
 stackbar <- with(PhysicalProfile, table(Reason,Groups))
 stackbar <- as.data.frame(stackbar)
-stackbar$Reason <- revalue(stackbar$Reason, 
+stackbar$Reason <- revalue(stackbar$Reason,
                   c("13"="Diseases of musculoskeletal and connective tissue",
                     "23"="Medical consultation",
                     "28"="Dental consultation",
@@ -451,7 +451,7 @@ stackbar$Reason <- revalue(stackbar$Reason,
 
 ggplot(stackbar, aes(x=Groups, y=Freq, fill=Reason)) +
     geom_bar(position = "stack", stat = "identity") +
-  scale_fill_brewer(palette = "RdYlBu") 
+  scale_fill_brewer(palette = "RdYlBu")
 ```
 
 The above plot is broken down into the seven clusters. As it is illustrated clusters one, two and three have the majority of employee absenteeism reason frequencies. To find out in which variables groups 1, 2 and 3 differ from the others, the mean values and scatter of the following variables are analysed:
@@ -461,38 +461,38 @@ The above plot is broken down into the seven clusters. As it is illustrated clus
 P1 <- ggplot(PhysicalProfile, aes(x=as.factor(Groups), y=BMI)) +
       geom_boxplot() +
       stat_summary(fun = "mean", color="red", shape=15) +
-      geom_jitter(alpha=0.5, width = 0.15) + 
+      geom_jitter(alpha=0.5, width = 0.15) +
  labs(x = "Cluster Groups") +
   theme_bw()
 
 P2 <- ggplot(PhysicalProfile, aes(x=as.factor(Groups), y=Age)) +
       geom_boxplot() +
       stat_summary(fun = "mean", color="red", shape=15) +
-      geom_jitter(alpha=0.5, width = 0.15) + 
+      geom_jitter(alpha=0.5, width = 0.15) +
  labs(x = "Cluster Groups") +
   theme_bw()
 
-P3 <- ggplot(PhysicalProfile, aes(x=as.factor(Groups), 
+P3 <- ggplot(PhysicalProfile, aes(x=as.factor(Groups),
                                   y=Work.load.Average.day)) +
       geom_boxplot() +
       stat_summary(fun = "mean", color="red", shape=15) +
-      geom_jitter(alpha=0.5, width = 0.15) + 
+      geom_jitter(alpha=0.5, width = 0.15) +
  labs(x = "Cluster Groups")+
   theme_bw()
 
-P4 <- ggplot(PhysicalProfile, aes(x=as.factor(Groups), 
+P4 <- ggplot(PhysicalProfile, aes(x=as.factor(Groups),
                                   y=Distance.from.Residence.to.work)) +
       geom_boxplot() +
       stat_summary(fun = "mean", color="red", shape=15) +
-      geom_jitter(alpha=0.5, width = 0.15) + 
+      geom_jitter(alpha=0.5, width = 0.15) +
  labs(x = "Cluster Groups")+
   theme_bw()
 
-P5 <- ggplot(PhysicalProfile, aes(x=as.factor(Groups), 
+P5 <- ggplot(PhysicalProfile, aes(x=as.factor(Groups),
                                   y=Transportation.expense)) +
       geom_boxplot() +
       stat_summary(fun = "mean", color="red", shape=15) +
-      geom_jitter(alpha=0.5, width = 0.15) + 
+      geom_jitter(alpha=0.5, width = 0.15) +
  labs(x = "Cluster Groups")+
   theme_bw()
 
@@ -500,36 +500,36 @@ P6 <- ggplot(PhysicalProfile, aes(x=as.factor(Groups),
                                   y=Service.time)) +
       geom_boxplot() +
       stat_summary(fun = "mean", color="red", shape=15) +
-      geom_jitter(alpha=0.5, width = 0.15) + 
+      geom_jitter(alpha=0.5, width = 0.15) +
  labs(x = "Cluster Groups")+
   theme_bw()
 
-P7 <- ggplot(PhysicalProfile, aes(x=as.factor(Groups), 
+P7 <- ggplot(PhysicalProfile, aes(x=as.factor(Groups),
                                   y=Day.of.the.week)) +
       geom_boxplot() +
       stat_summary(fun = "mean", color="red", shape=15) +
-      geom_jitter(alpha=0.5, width = 0.15) + 
+      geom_jitter(alpha=0.5, width = 0.15) +
  labs(x = "Cluster Groups")+
   theme_bw()
 
-P8 <- ggplot(PhysicalProfile, aes(x=as.factor(Groups), 
+P8 <- ggplot(PhysicalProfile, aes(x=as.factor(Groups),
                                   y=Month.of.absence)) +
       geom_boxplot() +
       stat_summary(fun = "mean", color="red", shape=15) +
-      geom_jitter(alpha=0.5, width = 0.15) + 
+      geom_jitter(alpha=0.5, width = 0.15) +
  labs(x = "Cluster Groups")+
   theme_bw()
 
 
 
-grid.arrange(P1,P2,P3,P4, ncol =2) 
+grid.arrange(P1,P2,P3,P4, ncol =2)
 grid.arrange(P5,P6,P7,P8, ncol=2)
 
 ```
 
-As can be seen from the above diagrams, groups 1, 2 and 3 differ mainly in the variables BMI, Distance to work and Transportation expense. As the groups have been subdivided according to height and weight, it is clear that the BMI value differs greatly. The distance from work and transportation expenses, however, indicate that those employees who have a long way to work are absent more often. 
+As can be seen from the above diagrams, groups 1, 2 and 3 differ mainly in the variables BMI, Distance to work and Transportation expense. As the groups have been subdivided according to height and weight, it is clear that the BMI value differs greatly. The distance from work and transportation expenses, however, indicate that those employees who have a long way to work are absent more often.
 
-# Conclusion 
+# Conclusion
 
 This concludes our exploratory data analysis using graphs and clustering analysis. In this report the analysis approach was hierarchical clustering using the *euclidean* method and the complete linkage. In this clustering, we were able to see more clear what physical profiles and age groups were contributing to employee absenteeism. This method can be taken into account for different grouping and further analysis.
 
@@ -556,41 +556,41 @@ computing. R Foundation for Statistical Computing, Vienna, Austria.
 URL https://www.R-project.org/.
 
 [2] Wickham et al., (2019). Welcome to the tidyverse. Journal of Open
-Source Software, 4(43), 1686, https://doi.org/10.21105/joss.01686 
+Source Software, 4(43), 1686, https://doi.org/10.21105/joss.01686
 
 [3] Hao Zhu (2020). kableExtra: Construct Complex
   Table with 'kable' and Pipe Syntax. R package
   version 1.2.1.
   https://CRAN.R-project.org/package=kableExtra
-  
+
 [4] Erich Neuwirth (2014). RColorBrewer: ColorBrewer
   Palettes. R package version 1.1-2.
   https://CRAN.R-project.org/package=RColorBrewer
-  
+
 [5] Taiyun Wei and Viliam Simko (2017). R package
   "corrplot": Visualization of a Correlation Matrix
   (Version 0.84). Available from
   https://github.com/taiyun/corrplot
-  
+
 [6] Maechler, M., Rousseeuw, P., Struyf, A., Hubert,
   M., Hornik, K.(2019).  cluster: Cluster Analysis
-  Basics and Extensions. R package version 2.1.0. 
-  
+  Basics and Extensions. R package version 2.1.0.
+
 [7] Alboukadel Kassambara and Fabian Mundt (2020).
   factoextra: Extract and Visualize the Results of
   Multivariate Data Analyses. R package version
   1.0.7.
   https://CRAN.R-project.org/package=factoextra
-  
+
 [8] Tal Galili (2015). dendextend: an R package for
   visualizing, adjusting, and comparing trees of
   hierarchical clustering. Bioinformatics. DOI:
   10.1093/bioinformatics/btv428
-  
+
 [9] Baptiste Auguie (2017). gridExtra: Miscellaneous
   Functions for "Grid" Graphics. R package version
   2.3. https://CRAN.R-project.org/package=gridExtra  
-  
+
 [10] Hadley Wickham (2011). The Split-Apply-Combine Strategy for Data Analysis.
   Journal of Statistical Software, 40(1), 1-29. URL
-  http://www.jstatsoft.org/v40/i01/. 
+  http://www.jstatsoft.org/v40/i01/.
